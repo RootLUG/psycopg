@@ -21,3 +21,18 @@ def global_adapters():
     adapters.types.clear()
     for t in types:
         adapters.types.add(t)
+
+
+@pytest.fixture(scope="module")
+def generators():
+    """Return the 'generators' module for selected psycopg implementation."""
+    from psycopg import pq
+
+    if pq.__impl__ == "c":
+        from psycopg._cmodule import _psycopg
+
+        return _psycopg
+    else:
+        import psycopg.generators
+
+        return psycopg.generators
