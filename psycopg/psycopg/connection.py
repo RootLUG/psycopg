@@ -494,8 +494,8 @@ class BaseConnection(Generic[Row]):
             return
 
         yield from self._exec_command(b"ROLLBACK")
-        cmd = self._prepared.clear()
-        if cmd:
+        self._prepared.clear()
+        for cmd in self._prepared.get_maintenance_commands():
             yield from self._exec_command(cmd)
 
 

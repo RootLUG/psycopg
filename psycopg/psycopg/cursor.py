@@ -207,6 +207,9 @@ class BaseCursor(Generic[ConnectionType, Row]):
         self._execute_results(results)
         self._last_query = query
 
+        for cmd in self._conn._prepared.get_maintenance_commands():
+            yield from self._conn._exec_command(cmd)
+
     def _executemany_gen(
         self, query: Query, params_seq: Iterable[Params]
     ) -> PQGen[None]:
@@ -225,6 +228,9 @@ class BaseCursor(Generic[ConnectionType, Row]):
             self._execute_results(results)
 
         self._last_query = query
+
+        for cmd in self._conn._prepared.get_maintenance_commands():
+            yield from self._conn._exec_command(cmd)
 
     def _maybe_prepare_gen(
         self,
