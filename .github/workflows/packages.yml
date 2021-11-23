@@ -155,7 +155,7 @@ jobs:
       fail-fast: false
       matrix:
         # These archs require an Apple M1 runner: [arm64, universal2]
-        arch: [x86_64]
+        arch: [x86_64, arm64, universal2]
         pyver: [cp36, cp37, cp38, cp39, cp310]
 
     steps:
